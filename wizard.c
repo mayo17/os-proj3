@@ -9,12 +9,12 @@
 void *
 wizard_func(void *wizard_descr)
 {
+	printf("WIZARD\n");
   struct cube* cube;
   struct room *newroom;
   struct room *oldroom;
   struct wizard* self;
   struct wizard* other;
-
 
   self = (struct wizard*)wizard_descr;
   assert(self);

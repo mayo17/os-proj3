@@ -170,7 +170,7 @@ struct wizard *init_wizard(struct cube* cube, char team, int id, pthread_t *thre
 
   /* Fill in */
   //OUR CODE: Initialize the thread
-  pthread_create(&threads[tdCount], NULL, wizard_func, (void *)&w);
+  pthread_create(&threads[tdCount], NULL, wizard_func, (void *)w);
   printf("Thread: %d\n", tdCount);
   tdCount++;
 
@@ -342,7 +342,7 @@ main(int argc, char** argv)
       i++;
     }
 
-    pthread_t threads[teamA_size + teamB_size];
+    pthread_t threads[teamA_size + teamB_size + 1];
 
   /* Sets the random seed */
   srand(seed);
