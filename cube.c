@@ -18,6 +18,8 @@
 #define TRUE 1
 #define FALSE 0
 
+int tdCount = 0;
+
 void 
 command_line_usage()
 {
@@ -94,7 +96,7 @@ print_cube(struct cube *cube)
   return;
 }
 
-struct wizard *init_wizard(struct cube* cube, char team, int id)
+struct wizard *init_wizard(struct cube* cube, char team, int id, pthread_t *threads)
 {
   int x, newx;
   int y, newy;
@@ -167,6 +169,10 @@ struct wizard *init_wizard(struct cube* cube, char team, int id)
     }
 
   /* Fill in */
+  //OUR CODE: Initialize the thread
+  pthread_create(&threads[tdCount], NULL, wizard_func, (void *)&w);
+  printf("Thread: %d\n", tdCount);
+  tdCount++;
 
 
   return w;
@@ -336,6 +342,8 @@ main(int argc, char** argv)
       i++;
     }
 
+    pthread_t threads[teamA_size + teamB_size];
+
   /* Sets the random seed */
   srand(seed);
 
@@ -397,7 +405,7 @@ main(int argc, char** argv)
   /* Team A */
   for (i = 0; i < teamA_size; i++)
     {
-      if ((wizard_descr = init_wizard(cube, 'A', i)) == NULL)
+      if ((wizard_descr = init_wizard(cube, 'A', i, threads)) == NULL)
 	{
 	  fprintf(stderr, "Wizard initialization failed (Team A number %d)\n", i);
 	  exit(1);
@@ -409,7 +417,7 @@ main(int argc, char** argv)
 
   for (i = 0; i < teamB_size; i++)
     {
-      if ((wizard_descr = init_wizard(cube, 'B', i)) == NULL)
+      if ((wizard_descr = init_wizard(cube, 'B', i, threads)) == NULL)
 	{
 	  fprintf(stderr, "Wizard initialization failed (Team B number %d)\n", i);
 	  exit(1);
