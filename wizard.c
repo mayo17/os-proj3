@@ -42,6 +42,7 @@ wizard_func(void *wizard_descr)
 		}
 	}
 	pthread_mutex_unlock(&condition_mutex);
+	
 
 	/* Infinite loop */
 	while (1)

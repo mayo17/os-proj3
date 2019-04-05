@@ -240,19 +240,17 @@ int interface(void *cube_ref)
       else
       {
         cube->game_status = 0;
-
-        /* Start the game */
-
-        /* Fill in */
       }
     }
     else if (!strcmp(command, "c"))
     {
       //Starts the game in continous mode
+      cube->game_status = 0;
       cont = 1;
     }
     else if (!strcmp(command, "p"))
     {
+      cube->game_status = 0;
       //Parses one turn
       if (parse == 0)
         parse = 1;
