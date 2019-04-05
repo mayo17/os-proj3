@@ -3,6 +3,8 @@
 
 #define SOLUTION
 
+#include <semaphore.h>
+
 struct cube;
 
 struct wizard {
@@ -31,9 +33,10 @@ struct cube {
   struct wizard **teamA_wizards;
   struct wizard **teamB_wizards;
   int game_status;
-
   /* Pointer to a two-dimensional array of rooms */
   struct room ***rooms;
+  sem_t *semtex;
+
 
   /* Fill in as required */
 };

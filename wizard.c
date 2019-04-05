@@ -45,7 +45,11 @@ wizard_func(void *wizard_descr)
 	/* Infinite loop */
 	while (1)
 	{
-
+		//Waits self if its frozen
+		if(self->status == 1)
+		{
+			sem_wait(&cube->semtex[self->id]);
+		}
 		/* Loops until he's able to get a hold on both the old and new rooms */
 		while (1)
 		{
@@ -120,6 +124,17 @@ wizard_func(void *wizard_descr)
 
 			/* Fill in */
 		}
+		
+		int winnerCheck = check_winner(cube);
+		if (winnerCheck == 1) {
+    	printf("Team B has won.\n");
+			return NULL;
+  	}else if (winnerCheck == 2) {
+    	printf("Team A has won.\n");
+			return NULL;
+  	}
+  
+
 		pthread_mutex_lock(&condition_mutex);
 		while (parse == 1)
 		{

@@ -7,7 +7,7 @@
 #include <assert.h>
 #include <readline/readline.h>
 #include <readline/history.h>
-
+#include <semaphore.h>
 #include "cube.h"
 #include "wizard.h"
 
@@ -29,15 +29,35 @@ void command_line_usage()
 
 void kill_wizards(struct wizard *w)
 {
-  /* Fill in */
-
+  pthread_cancel(w->id);
   return;
 }
 
 int check_winner(struct cube *cube)
 {
-  /* Fill in */
-
+  int i = 0;
+  int teamAfrozen = 0;
+  int teamBfrozen = 0;
+  for(i = 0; i < cube->teamA_size; i++)
+  {
+    if (cube->teamA_wizards[i]->status == 1) {
+      teamAfrozen++;
+    }
+  }
+  if(teamAfrozen == cube->teamA_size)
+  {
+    return 1;
+  }
+  for(i = 0; i < cube->teamB_size; i++)
+  {
+    if (cube->teamB_wizards[i]->status == 1) {
+      teamBfrozen++;
+    }
+  }
+  if(teamBfrozen == cube->teamB_size)
+  {
+    return 2;
+  }
   return 0;
 }
 
@@ -369,6 +389,8 @@ int main(int argc, char **argv)
 
   /* Creates the rooms */
   cube->rooms = malloc(sizeof(struct room **) * cube_size);
+  cube->semtex = (sem_t *)malloc(sizeof(sem_t) * (teamA_size + teamB_size));
+  
   assert(cube->rooms);
 
   for (i = 0; i < cube_size; i++)
@@ -430,13 +452,28 @@ int main(int argc, char **argv)
   }
 
   /* Fill in */
-
+  //sem_t semtex[cube_size][cube_size];
+  int a = 0;
+  for(a = 0; a < teamA_size + teamB_size; a++)
+  {
+    sem_init(&cube->semtex[a], 0, 0);
+  }
   /* Goes in the interface loop */
   tdCount++;
   //res = interface(cube);
   pthread_create(&threads[tdCount], NULL, (void *)interface, (void *)cube);
   pthread_join(threads[tdCount], NULL);
   //exit(res);
+
+  // int winnerCheck = check_winner(cube);
+
+  // if (winnerCheck == 1) {
+  //   printf("Team B has won.\n");
+  // }else if (winnerCheck == 2)
+  // {
+  //   printf("Team A has won.\n");
+  // }
+  
 }
 
 void dostuff()
@@ -476,9 +513,12 @@ choose_room(struct wizard *w)
 
 int try_room(struct wizard *w, struct room *oldroom, struct room *newroom)
 {
-
   /* Fill in */
-
+  if((newroom->wizards[0] == NULL) || (newroom->wizards[1] == NULL))
+  {
+    return 0;
+  }
+  printf("Request denied, room locked!\n");
   return 1;
 }
 
@@ -562,6 +602,7 @@ int fight_wizard(struct wizard *self, struct wizard *other, struct room *room)
            other->team, other->id);
 
     /* Fill in */
+    other->status = 1;
   }
 
   /* Self freezes and release the lock */
@@ -573,6 +614,7 @@ int fight_wizard(struct wizard *self, struct wizard *other, struct room *room)
            other->team, other->id);
 
     /* Fill in */
+    self->status = 1;
 
     return 1;
   }
@@ -594,6 +636,8 @@ int free_wizard(struct wizard *self, struct wizard *other, struct room *room)
            other->team, other->id);
 
     /* Fill in */
+    other->status = 0;
+    sem_post(&other->cube->semtex[other->id]);
   }
 
   /* The spell failed */
