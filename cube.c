@@ -22,26 +22,46 @@ int tdCount = 0;
 int cont = 0;
 int parse = 0;
 
+<<<<<<< HEAD
 void command_line_usage()
+=======
+void
+command_line_usage()
+>>>>>>> 02febbc1883b52efc0ad338a8bae677c0fc6691c
 {
   fprintf(stderr, "-size <size of cube> -teamA <size of team> -teamB <size of team> -seed <seed value>\n");
 }
 
+<<<<<<< HEAD
 void kill_wizards(struct wizard *w)
+=======
+void
+kill_wizards(struct wizard *w)
+>>>>>>> 02febbc1883b52efc0ad338a8bae677c0fc6691c
 {
   /* Fill in */
 
   return;
 }
 
+<<<<<<< HEAD
 int check_winner(struct cube *cube)
+=======
+int
+check_winner(struct cube* cube)
+>>>>>>> 02febbc1883b52efc0ad338a8bae677c0fc6691c
 {
   /* Fill in */
 
   return 0;
 }
 
+<<<<<<< HEAD
 void print_cube(struct cube *cube)
+=======
+void
+print_cube(struct cube *cube)
+>>>>>>> 02febbc1883b52efc0ad338a8bae677c0fc6691c
 {
   int i;
   int j;
@@ -82,6 +102,10 @@ void print_cube(struct cube *cube)
       printf("|");
     }
     printf("\n");
+<<<<<<< HEAD
+=======
+
+>>>>>>> 02febbc1883b52efc0ad338a8bae677c0fc6691c
   }
   printf("+");
   for (j = 0; j < cube->size; j++)
@@ -127,12 +151,19 @@ struct wizard *init_wizard(struct cube *cube, char team, int id, pthread_t *thre
   else
   {
     newx = (x + 1) % cube->size;
+<<<<<<< HEAD
     if (newx == 0)
       newy = (y + 1) % cube->size;
     else
       newy = y;
 
     while ((newx != x || newy != y) && !initflag)
+=======
+    if (newx == 0) newy = (y + 1) % cube->size;
+    else newy = y;
+
+    while((newx != x || newy != y) && !initflag)
+>>>>>>> 02febbc1883b52efc0ad338a8bae677c0fc6691c
     {
 
       if (cube->rooms[newx][newy]->wizards[0] == NULL)
@@ -148,6 +179,18 @@ struct wizard *init_wizard(struct cube *cube, char team, int id, pthread_t *thre
         w->x = newx;
         w->y = newy;
         initflag = TRUE;
+<<<<<<< HEAD
+      }
+      else
+      {
+        newx = (newx + 1) % cube->size;
+
+        if (newx == 0)
+        {
+          newy = (newy + 1) % cube->size;
+        }
+=======
+>>>>>>> 02febbc1883b52efc0ad338a8bae677c0fc6691c
       }
       else
       {
@@ -158,12 +201,20 @@ struct wizard *init_wizard(struct cube *cube, char team, int id, pthread_t *thre
           newy = (newy + 1) % cube->size;
         }
       }
+
     }
+    if (!initflag){
+      free(w);
+      return NULL;
+    }
+<<<<<<< HEAD
     if (!initflag)
     {
       free(w);
       return NULL;
     }
+=======
+>>>>>>> 02febbc1883b52efc0ad338a8bae677c0fc6691c
   }
 
   /* Fill in */
@@ -173,7 +224,12 @@ struct wizard *init_wizard(struct cube *cube, char team, int id, pthread_t *thre
   return w;
 }
 
+<<<<<<< HEAD
 int interface(void *cube_ref)
+=======
+int
+interface(void *cube_ref)
+>>>>>>> 02febbc1883b52efc0ad338a8bae677c0fc6691c
 {
   char *command;
   struct cube *cube;
@@ -187,14 +243,20 @@ int interface(void *cube_ref)
   while (1)
   {
     line = readline("cube> ");
+<<<<<<< HEAD
     if (line == NULL)
       continue;
     if (strlen(line) == 0)
       continue;
+=======
+    if (line == NULL) continue;
+    if (strlen(line) == 0) continue;
+>>>>>>> 02febbc1883b52efc0ad338a8bae677c0fc6691c
 
     add_history(line);
 
     i = 0;
+<<<<<<< HEAD
     while (isspace(line[i]))
       i++;
     command = &line[i];
@@ -208,6 +270,21 @@ int interface(void *cube_ref)
     }
     else if (!strcmp(command, "start"))
     {
+=======
+    while (isspace(line[i])) i++;
+
+    command = &line[i];
+    if (!strcmp(command, "exit"))
+    {
+      return 0;
+    }
+    else if (!strcmp(command, "show"))
+    {
+      print_cube(cube);
+    }
+    else if (!strcmp(command, "start"))
+    {
+>>>>>>> 02febbc1883b52efc0ad338a8bae677c0fc6691c
       if (cube->game_status == 1)
       {
         fprintf(stderr, "Game is over. Cannot be started again\n");
@@ -219,6 +296,7 @@ int interface(void *cube_ref)
       else
       {
         cube->game_status = 0;
+<<<<<<< HEAD
 
         /* Start the game */
 
@@ -248,7 +326,29 @@ int interface(void *cube_ref)
     else
     {
       fprintf(stderr, "unknown command %s\n", command);
+=======
+
+        /* Start the game */
+
+        /* Fill in */
+
+
+
+      }
+>>>>>>> 02febbc1883b52efc0ad338a8bae677c0fc6691c
     }
+    else if (!strcmp(command, "stop"))
+    {
+      /* Stop the game */
+      return 1;
+    }
+    else
+    {
+      fprintf(stderr, "unknown command %s\n", command);
+    }
+
+    free(line);
+  }
 
     free(line);
   }
@@ -256,7 +356,12 @@ int interface(void *cube_ref)
   return 0;
 }
 
+<<<<<<< HEAD
 int main(int argc, char **argv)
+=======
+int
+main(int argc, char** argv)
+>>>>>>> 02febbc1883b52efc0ad338a8bae677c0fc6691c
 {
   int cube_size = DEFAULT_CUBE_SIZE;
   int teamA_size = DEFAULT_TEAM_SIZE;
@@ -270,9 +375,10 @@ int main(int argc, char **argv)
   int i, j;
 
   /* Parse command line and fill:
-     teamA_size, timeBsize, cube_size, and seed */
+  teamA_size, timeBsize, cube_size, and seed */
 
   i = 1;
+<<<<<<< HEAD
   while (i < argc)
   {
     if (!strcmp(argv[i], "-size"))
@@ -280,6 +386,82 @@ int main(int argc, char **argv)
       i++;
       if (argv[i] == NULL)
       {
+        fprintf(stderr, "Missing cube size\n");
+        command_line_usage();
+        exit(-1);
+      }
+      cube_size = atoi(argv[i]);
+      if (cube_size == 0)
+      {
+        fprintf(stderr, "Illegal cube size\n");
+        exit(-1);
+      }
+    }
+    else if (!strcmp(argv[i], "-teamA"))
+    {
+      i++;
+      if (argv[i] == NULL)
+      {
+        fprintf(stderr, "Missing team size\n");
+        command_line_usage();
+        exit(-1);
+      }
+      teamA_size = atoi(argv[i]);
+      if (teamA_size == 0)
+      {
+        fprintf(stderr, "Illegal team size\n");
+        exit(-1);
+      }
+    }
+    else if (!strcmp(argv[i], "-teamB"))
+    {
+      i++;
+      if (argv[i] == NULL)
+      {
+        fprintf(stderr, "Missing team size\n");
+        command_line_usage();
+        exit(-1);
+      }
+      teamB_size = atoi(argv[i]);
+      if (teamB_size == 0)
+      {
+        fprintf(stderr, "Illegal team size\n");
+        exit(-1);
+      }
+    }
+    else if (!strcmp(argv[i], "-seed"))
+=======
+  while(i < argc)
+  {
+    if (!strcmp(argv[i], "-size"))
+>>>>>>> 02febbc1883b52efc0ad338a8bae677c0fc6691c
+    {
+      i++;
+      if (argv[i] == NULL)
+      {
+<<<<<<< HEAD
+        fprintf(stderr, "Missing seed value\n");
+        command_line_usage();
+        exit(-1);
+      }
+      seed = atoi(argv[i]);
+      if (seed == 0)
+      {
+        fprintf(stderr, "Illegal seed value\n");
+        exit(-1);
+      }
+    }
+    else
+    {
+      fprintf(stderr, "Unknown command line parameter %s\n", argv[i]);
+      command_line_usage();
+      exit(-1);
+    }
+    i++;
+  }
+
+  pthread_t threads[teamA_size + teamB_size + 2];
+=======
         fprintf(stderr, "Missing cube size\n");
         command_line_usage();
         exit(-1);
@@ -348,18 +530,23 @@ int main(int argc, char **argv)
     i++;
   }
 
-  pthread_t threads[teamA_size + teamB_size + 2];
+  pthread_t threads[teamA_size + teamB_size + 1];
+>>>>>>> 02febbc1883b52efc0ad338a8bae677c0fc6691c
 
   /* Sets the random seed */
   srand(seed);
 
   /* Checks that the number of wizards does not violate
-     the "max occupancy" constraint */
+  the "max occupancy" constraint */
   if ((teamA_size + teamB_size) > ((cube_size * cube_size) * 2))
   {
     fprintf(stderr, "Sorry but there are too many wizards!\n");
     exit(1);
   }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 02febbc1883b52efc0ad338a8bae677c0fc6691c
 
   /* Creates the cube */
   cube = (struct cube *)malloc(sizeof(struct cube));
@@ -389,6 +576,10 @@ int main(int argc, char **argv)
       room_col[j] = room;
 
       /* Fill in */
+<<<<<<< HEAD
+=======
+
+>>>>>>> 02febbc1883b52efc0ad338a8bae677c0fc6691c
     }
 
     cube->rooms[i] = room_col;
@@ -397,12 +588,20 @@ int main(int argc, char **argv)
   /* Creates the wizards and positions them in the cube */
   cube->teamA_size = teamA_size;
   cube->teamA_wizards = (struct wizard **)malloc(sizeof(struct wizard *) *
+<<<<<<< HEAD
                                                  teamA_size);
+=======
+  teamA_size);
+>>>>>>> 02febbc1883b52efc0ad338a8bae677c0fc6691c
   assert(cube->teamA_wizards);
 
   cube->teamB_size = teamB_size;
   cube->teamB_wizards = (struct wizard **)malloc(sizeof(struct wizard *) *
+<<<<<<< HEAD
                                                  teamB_size);
+=======
+  teamB_size);
+>>>>>>> 02febbc1883b52efc0ad338a8bae677c0fc6691c
 
   assert(cube->teamB_wizards);
 
@@ -430,6 +629,10 @@ int main(int argc, char **argv)
   }
 
   /* Fill in */
+<<<<<<< HEAD
+=======
+
+>>>>>>> 02febbc1883b52efc0ad338a8bae677c0fc6691c
 
   /* Goes in the interface loop */
   tdCount++;
@@ -454,7 +657,11 @@ void dostuff()
 }
 
 struct room *
+<<<<<<< HEAD
 choose_room(struct wizard *w)
+=======
+choose_room(struct wizard* w)
+>>>>>>> 02febbc1883b52efc0ad338a8bae677c0fc6691c
 {
   int newx = 0;
   int newy = 0;
@@ -465,8 +672,12 @@ choose_room(struct wizard *w)
     newx = rand() % 2;
     newy = rand() % 2;
   }
+<<<<<<< HEAD
   if ((rand() % 2) == 1)
   {
+=======
+  if ((rand() % 2) == 1) {
+>>>>>>> 02febbc1883b52efc0ad338a8bae677c0fc6691c
     newx = 0 - newx;
     newy = 0 - newy;
   }
@@ -474,12 +685,21 @@ choose_room(struct wizard *w)
   return w->cube->rooms[(w->x + w->cube->size + newx) % w->cube->size][(w->y + w->cube->size + newy) % w->cube->size];
 }
 
+<<<<<<< HEAD
 int try_room(struct wizard *w, struct room *oldroom, struct room *newroom)
+=======
+int
+try_room(struct wizard *w, struct room *oldroom, struct room* newroom)
+>>>>>>> 02febbc1883b52efc0ad338a8bae677c0fc6691c
 {
 
   /* Fill in */
 
   return 1;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 02febbc1883b52efc0ad338a8bae677c0fc6691c
 }
 
 struct wizard *
@@ -500,7 +720,12 @@ find_opponent(struct wizard *self, struct room *room)
   return other;
 }
 
+<<<<<<< HEAD
 void switch_rooms(struct wizard *w, struct room *oldroom, struct room *newroom)
+=======
+void
+switch_rooms(struct wizard *w, struct room *oldroom, struct room* newroom)
+>>>>>>> 02febbc1883b52efc0ad338a8bae677c0fc6691c
 {
   struct wizard *other;
 
@@ -516,7 +741,11 @@ void switch_rooms(struct wizard *w, struct room *oldroom, struct room *newroom)
   else /* This should never happen */
   {
     printf("Wizard %c%d in room (%d,%d) can't find self!\n",
+<<<<<<< HEAD
            w->team, w->id, oldroom->x, oldroom->y);
+=======
+    w->team, w->id, oldroom->x, oldroom->y);
+>>>>>>> 02febbc1883b52efc0ad338a8bae677c0fc6691c
     print_cube(w->cube);
     exit(1);
   }
@@ -537,7 +766,11 @@ void switch_rooms(struct wizard *w, struct room *oldroom, struct room *newroom)
   else /* This should never happen */
   {
     printf("Wizard %c%d in room (%d,%d) gets in a room already filled with people!\n",
+<<<<<<< HEAD
            w->team, w->id, newroom->x, newroom->y);
+=======
+    w->team, w->id, newroom->x, newroom->y);
+>>>>>>> 02febbc1883b52efc0ad338a8bae677c0fc6691c
     print_cube(w->cube);
     exit(1);
   }
@@ -547,7 +780,12 @@ void switch_rooms(struct wizard *w, struct room *oldroom, struct room *newroom)
   w->y = newroom->y;
 }
 
+<<<<<<< HEAD
 int fight_wizard(struct wizard *self, struct wizard *other, struct room *room)
+=======
+int
+fight_wizard(struct wizard *self, struct wizard *other, struct room *room)
+>>>>>>> 02febbc1883b52efc0ad338a8bae677c0fc6691c
 {
   int res;
 
@@ -558,10 +796,19 @@ int fight_wizard(struct wizard *self, struct wizard *other, struct room *room)
   if (res == 0)
   {
     printf("Wizard %c%d in room (%d,%d) freezes enemy %c%d\n",
+<<<<<<< HEAD
            self->team, self->id, room->x, room->y,
            other->team, other->id);
 
     /* Fill in */
+=======
+    self->team, self->id, room->x, room->y,
+    other->team, other->id);
+
+    /* Fill in */
+
+
+>>>>>>> 02febbc1883b52efc0ad338a8bae677c0fc6691c
   }
 
   /* Self freezes and release the lock */
@@ -569,8 +816,13 @@ int fight_wizard(struct wizard *self, struct wizard *other, struct room *room)
   {
 
     printf("Wizard %c%d in room (%d,%d) gets frozen by enemy %c%d\n",
+<<<<<<< HEAD
            self->team, self->id, room->x, room->y,
            other->team, other->id);
+=======
+    self->team, self->id, room->x, room->y,
+    other->team, other->id);
+>>>>>>> 02febbc1883b52efc0ad338a8bae677c0fc6691c
 
     /* Fill in */
 
@@ -579,7 +831,12 @@ int fight_wizard(struct wizard *self, struct wizard *other, struct room *room)
   return 0;
 }
 
+<<<<<<< HEAD
 int free_wizard(struct wizard *self, struct wizard *other, struct room *room)
+=======
+int
+free_wizard(struct wizard *self, struct wizard *other, struct room* room)
+>>>>>>> 02febbc1883b52efc0ad338a8bae677c0fc6691c
 {
   int res;
 
@@ -590,16 +847,29 @@ int free_wizard(struct wizard *self, struct wizard *other, struct room *room)
   if (res == 0)
   {
     printf("Wizard %c%d in room (%d,%d) unfreezes friend %c%d\n",
+<<<<<<< HEAD
            self->team, self->id, room->x, room->y,
            other->team, other->id);
 
     /* Fill in */
+=======
+    self->team, self->id, room->x, room->y,
+    other->team, other->id);
+
+    /* Fill in */
+
+>>>>>>> 02febbc1883b52efc0ad338a8bae677c0fc6691c
   }
 
   /* The spell failed */
   printf("Wizard %c%d in room (%d,%d) fails to unfreeze friend %c%d\n",
+<<<<<<< HEAD
          self->team, self->id, room->x, room->y,
          other->team, other->id);
+=======
+  self->team, self->id, room->x, room->y,
+  other->team, other->id);
+>>>>>>> 02febbc1883b52efc0ad338a8bae677c0fc6691c
 
   return 0;
 }
