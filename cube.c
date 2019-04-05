@@ -21,13 +21,13 @@
 int tdCount = 0;
 
 void
-command_line_usage()
+command_line_usage()  //Done
 {
   fprintf(stderr, "-size <size of cube> -teamA <size of team> -teamB <size of team> -seed <seed value>\n");
 }
 
 void
-kill_wizards(struct wizard *w)
+kill_wizards(struct wizard *w)  //Incomplete
 {
   /* Fill in */
 
@@ -36,7 +36,7 @@ kill_wizards(struct wizard *w)
 }
 
 int
-check_winner(struct cube* cube)
+check_winner(struct cube* cube) //Incomplete
 {
   /* Fill in */
 
@@ -44,7 +44,7 @@ check_winner(struct cube* cube)
 }
 
 void
-print_cube(struct cube *cube)
+print_cube(struct cube *cube) //Done
 {
   int i;
   int j;
@@ -96,7 +96,7 @@ print_cube(struct cube *cube)
   return;
 }
 
-struct wizard *init_wizard(struct cube* cube, char team, int id, pthread_t *threads)
+struct wizard *init_wizard(struct cube* cube, char team, int id, pthread_t *threads)  //Done?
 {
   int x, newx;
   int y, newy;
@@ -434,7 +434,7 @@ main(int argc, char** argv)
   exit(res);
 }
 
-void dostuff()
+void dostuff()  //Done
 {
   int i;
   int wait;
@@ -447,7 +447,7 @@ void dostuff()
 }
 
 struct room *
-choose_room(struct wizard* w)
+choose_room(struct wizard* w) //Incomplete
 {
   int newx = 0;
   int newy = 0;
@@ -468,7 +468,7 @@ choose_room(struct wizard* w)
 }
 
 int
-try_room(struct wizard *w, struct room *oldroom, struct room* newroom)
+try_room(struct wizard *w, struct room *oldroom, struct room* newroom)  //Incomplete
 {
 
   /* Fill in */
@@ -478,7 +478,7 @@ try_room(struct wizard *w, struct room *oldroom, struct room* newroom)
 }
 
 struct wizard *
-find_opponent(struct wizard* self, struct room *room)
+find_opponent(struct wizard* self, struct room *room) //Done
 {
   struct wizard *other = NULL;
 
@@ -496,7 +496,7 @@ find_opponent(struct wizard* self, struct room *room)
 }
 
 void
-switch_rooms(struct wizard *w, struct room *oldroom, struct room* newroom)
+switch_rooms(struct wizard *w, struct room *oldroom, struct room* newroom)  //Incomplete Check Semaphore
 {
   struct wizard *other;
 
@@ -544,7 +544,7 @@ switch_rooms(struct wizard *w, struct room *oldroom, struct room* newroom)
 }
 
 int
-fight_wizard(struct wizard *self, struct wizard *other, struct room *room)
+fight_wizard(struct wizard *self, struct wizard *other, struct room *room)  //Incomplete
 {
   int res;
 
@@ -579,7 +579,7 @@ fight_wizard(struct wizard *self, struct wizard *other, struct room *room)
 }
 
 int
-free_wizard(struct wizard *self, struct wizard *other, struct room* room)
+free_wizard(struct wizard *self, struct wizard *other, struct room* room) //Incomplete
 {
   int res;
 
