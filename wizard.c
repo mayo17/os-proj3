@@ -11,7 +11,6 @@ pthread_mutex_t condition_mutex;
 void *
 wizard_func(void *wizard_descr)
 {
-<<<<<<< HEAD
 	extern int parse;
 	extern int cont;
 	struct cube *cube;
@@ -21,16 +20,6 @@ wizard_func(void *wizard_descr)
 	struct wizard *other;
 
 	self = (struct wizard *)wizard_descr;
-=======
-	printf("WIZARD\n");
-	struct cube* cube;
-	struct room *newroom;
-	struct room *oldroom;
-	struct wizard* self;
-	struct wizard* other;
-
-	self = (struct wizard*)wizard_descr;
->>>>>>> 02febbc1883b52efc0ad338a8bae677c0fc6691c
 	assert(self);
 	cube = self->cube;
 	assert(cube);
@@ -42,7 +31,6 @@ wizard_func(void *wizard_descr)
 	/* Chooses the new room */
 	newroom = choose_room(self);
 
-<<<<<<< HEAD
 	pthread_mutex_lock(&condition_mutex);
 	while (cont == 0)
 	{
@@ -57,17 +45,11 @@ wizard_func(void *wizard_descr)
 	/* Infinite loop */
 	while (1)
 	{
-=======
-	/* Infinite loop */
-	while (1)
-	{
->>>>>>> 02febbc1883b52efc0ad338a8bae677c0fc6691c
 
 		/* Loops until he's able to get a hold on both the old and new rooms */
 		while (1)
 		{
 			printf("Wizard %c%d in room (%d,%d) wants to go to room (%d,%d)\n",
-<<<<<<< HEAD
 						 self->team, self->id, oldroom->x, oldroom->y, newroom->x, newroom->y);
 
 			if (try_room(self, oldroom, newroom))
@@ -144,83 +126,6 @@ wizard_func(void *wizard_descr)
 			//wait
 		}
 		pthread_mutex_unlock(&condition_mutex);
-=======
-			self->team, self->id, oldroom->x, oldroom->y, newroom->x, newroom->y);
-
-
-			if (try_room(self, oldroom, newroom))
-			{
-				/* Waits a random amount of time */
-				dostuff();
-
-				/* Chooses the new room */
-				newroom = choose_room(self);
-
-				/* Goes back to the initial state and try again */
-				continue;
-			}
-			else
-			{
-				break;
-			}
-		}
-
-		printf("Wizard %c%d in room (%d,%d) moves to room (%d,%d)\n",
-		self->team, self->id,
-		oldroom->x, oldroom->y, newroom->x, newroom->y);
-
-		/* Fill in */
-
-		/* Self is active and has control over both rooms */
-		switch_rooms(self, oldroom, newroom);
-
-		other = find_opponent(self, newroom);
-
-		/* If there is not another wizard does nothing */
-		if (other == NULL)
-		{
-
-			printf("Wizard %c%d in room (%d,%d) finds nobody around \n",
-			self->team, self->id, newroom->x, newroom->y);
-			/* Fill in */
-		}
-		else
-		{
-			/* Other is from opposite team */
-			if (other->team != self->team)
-			{
-
-
-				/* Checks if the opponent is active */
-				if (other->status == 0)
-				{
-					printf("Wizard %c%d in room (%d,%d) finds active enemy\n",
-					self->team, self->id, newroom->x, newroom->y);
-
-					fight_wizard(self, other, newroom);
-				}
-				else
-				{
-					printf("Wizard %c%d in room (%d,%d) finds enemy already frozen\n",
-					self->team, self->id, newroom->x, newroom->y);
-
-
-				}
-			}
-			/* Other is from same team */
-			else
-			{
-				/* Checks if the friend is frozen */
-				if (other->status == 1)
-				{
-					free_wizard(self, other, newroom);
-				}
-			}
-
-			/* Fill in */
-
-		}
->>>>>>> 02febbc1883b52efc0ad338a8bae677c0fc6691c
 
 		/* Thinks about what to do next */
 		dostuff();
