@@ -389,6 +389,12 @@ int main(int argc, char **argv)
   /* Creates the rooms */
   cube->rooms = malloc(sizeof(struct room **) * cube_size);
   cube->semtex = (sem_t *)malloc(sizeof(sem_t) * (teamA_size + teamB_size));
+  cube->plock = malloc(sizeof(pthread_mutex_t) * (cube_size));
+  int z = 0;
+  for(z = 0; z < cube_size; z++)
+  {
+    cube->plock[z] = malloc(sizeof(pthread_mutex_t) * (cube_size));
+  }
   
   assert(cube->rooms);
 
@@ -453,9 +459,18 @@ int main(int argc, char **argv)
   /* Fill in */
   //sem_t semtex[cube_size][cube_size];
   int a = 0;
+  int b = 0;
+  int c = 0;
   for(a = 0; a < teamA_size + teamB_size; a++)
   {
     sem_init(&cube->semtex[a], 0, 0);
+  }
+  for(b = 0; b < cube_size; b++)
+  {
+    for(c = 0; c < cube_size; c++)
+    {
+      pthread_mutex_init(&cube->plock[b][c], NULL);
+    }
   }
   /* Goes in the interface loop */
   tdCount++;
@@ -513,7 +528,11 @@ choose_room(struct wizard *w)
 int try_room(struct wizard *w, struct room *oldroom, struct room *newroom)
 {
   /* Fill in */
-  if((newroom->wizards[0] == NULL) || (newroom->wizards[1] == NULL))
+  /*if((newroom->wizards[0] == NULL) || (newroom->wizards[1] == NULL))
+  {
+    return 0;
+  }*/
+  if(newroom->wizards[0] == NULL || newroom->wizards[1] == NULL)
   {
     return 0;
   }
@@ -615,7 +634,7 @@ int fight_wizard(struct wizard *self, struct wizard *other, struct room *room)
     /* Fill in */
     self->status = 1;
 
-    return 1;
+    //return 1;
   }
   return 0;
 }
@@ -635,14 +654,19 @@ int free_wizard(struct wizard *self, struct wizard *other, struct room *room)
            other->team, other->id);
 
     /* Fill in */
-    other->status = 0;
-    sem_post(&other->cube->semtex[other->id]);
+    if(other->status == 1)
+    {
+      other->status = 0;
+      sem_post(&other->cube->semtex[other->id]);
+      }
   }
-
-  /* The spell failed */
-  printf("Wizard %c%d in room (%d,%d) fails to unfreeze friend %c%d\n",
-         self->team, self->id, room->x, room->y,
-         other->team, other->id);
+  else
+  {
+    /* The spell failed */
+    printf("Wizard %c%d in room (%d,%d) fails to unfreeze friend %c%d\n",
+          self->team, self->id, room->x, room->y,
+          other->team, other->id);
+  }
 
   return 0;
 }

@@ -36,6 +36,7 @@ struct cube {
   /* Pointer to a two-dimensional array of rooms */
   struct room ***rooms;
   sem_t *semtex;
+  pthread_mutex_t **plock;
 
 
   /* Fill in as required */

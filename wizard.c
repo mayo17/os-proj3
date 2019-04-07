@@ -70,11 +70,24 @@ wizard_func(void *wizard_descr)
 		//Waits self if its frozen
 		if(self->status == 1)
 		{
-			sem_wait(&cube->semtex[self->id]);
+			//sem_wait(&cube->semtex[self->id]);
+			while(self->status != 0)
+			{
+				if(winnerFound != 0)
+				{
+					kill_wizards(self);
+					return NULL;
+				}
+			}
 		}
 		/* Loops until he's able to get a hold on both the old and new rooms */
 		while (1)
 		{
+			if(winnerFound != 0)
+			{
+				kill_wizards(self);
+				return NULL;
+			}
 			printf("Wizard %c%d in room (%d,%d) wants to go to room (%d,%d)\n",
 						 self->team, self->id, oldroom->x, oldroom->y, newroom->x, newroom->y);
 
@@ -91,10 +104,16 @@ wizard_func(void *wizard_descr)
 			}
 			else
 			{
+				if(newroom->wizards[0] != NULL || newroom->wizards[1] != NULL)
+				{
+					if(pthread_mutex_trylock(&cube->plock[newroom->x][newroom->y]) != 0)
+					{
+						continue;
+					}
+				}
 				break;
 			}
 		}
-
 		printf("Wizard %c%d in room (%d,%d) moves to room (%d,%d)\n",
 					 self->team, self->id,
 					 oldroom->x, oldroom->y, newroom->x, newroom->y);
@@ -102,7 +121,13 @@ wizard_func(void *wizard_descr)
 		/* Fill in */
 
 		/* Self is active and has control over both rooms */
+		/*if(try_room(self, oldroom, newroom))
+		{
+			printf("Somehow skipped try rooms\n");
+			continue;
+		}*/
 		switch_rooms(self, oldroom, newroom);
+		pthread_mutex_unlock(&cube->plock[oldroom->x][oldroom->y]);
 
 		other = find_opponent(self, newroom);
 
@@ -146,14 +171,17 @@ wizard_func(void *wizard_descr)
 
 			/* Fill in */
 		}
-  
 
-		pthread_mutex_lock(&condition_mutex);
-		while (parse == 1)
+		if(cont == 0)
 		{
-			//wait
+			int currParse = parse;
+			pthread_mutex_lock(&condition_mutex);
+			while (currParse == parse)
+			{
+				//wait
+			}
+			pthread_mutex_unlock(&condition_mutex);
 		}
-		pthread_mutex_unlock(&condition_mutex);
 
 		/* Thinks about what to do next */
 		dostuff();
